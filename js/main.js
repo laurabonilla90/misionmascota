@@ -1,232 +1,180 @@
 // e-commerce de juguetes para mascotas
 
-//Variables
-
-let username = "laura"
-
-let password = "123"
-
-let juguetes = [
-    { id: 1, nombre: "Pelota premio", categoria: "pelotas", stock: 12, precio: 65000 },
-    { id: 2, nombre: "Osito", categoria: "peluches", stock: 20, precio: 35000 },
-    { id: 3, nombre: "Lazo fuerza", categoria: "cuerdas", stock: 7, precio: 15000 },
-    { id: 4, nombre: "Bowl sabores interactivos", categoria: "jueguetes interactivos", stock: 6, precio: 70000 },
-    { id: 5, nombre: "Laberinto de premios", categoria: "jueguetes interactivos", stock: 4, precio: 80000 },
-    { id: 6, nombre: "Pavo cantante", categoria: "juguetes en latex", stock: 5, precio: 12000 },
-    { id: 7, nombre: "Pelota gira-sola", categoria: "pelotas", stock: 16, precio: 38000 },
-    { id: 8, nombre: "Elefante", categoria: "juguetes en latex", stock: 4, precio: 15000 },
-  ]
-
-let carrito = []
-
-// Funciones
-
-function menuInicio () {
-
-    let opciones = `¿Qué te gustaría hacer hoy?
-    1. Ver juguetes 
-    2. Filtrar productos por categoría
-    3. Ver juguetes de menor a mayor precio
-    4. Agregar juguetes al carrito por ID
-    5. Ver total a pagar del carrito
-    0. Cerrar sesión`
-
-let option = prompt(opciones)
-
-
-switch (option) {
-    case "1":
-        let listaJuguetes= ""
-        juguetes.forEach(function(juguete, indice) {
-            listaJuguetes += juguete.nombre + "\n"
-        });
-
-        listaJuguetes += "\n* Oprime 0 para volver al menú"
-
-        let regresarMenu = prompt (listaJuguetes)
-
-        if (regresarMenu == 0) {
-            menuInicio()
-        }
-
-        break
-
-    case "2":
-
-        let categorias = `¿Por cuál categoría te gustaría filtrar?
-        1. Cuerdas 
-        2. Juguetes en latex
-        3. Juguetes interactivos
-        4. Pelotas
-        5. Peluches
-        0. Regresar al menú principal`
-
-        let verCategorias = prompt (categorias)
-
-        switch (verCategorias) {
-            case "1":
-                filtroCategoria("cuerdas")
-                break
-            
-            case "2":
-                filtroCategoria("juguetes en latex")
-                break
-            
-            case "3":
-                filtroCategoria("juguetes interactivos")
-                break
-            
-            case "4":
-                filtroCategoria("pelotas")
-                break
-            
-            case "5":
-                filtroCategoria("peluches")
-                break
-        
-            case "0":
-                menuInicio()
-                break
-            }
-
-        break
-
-    case "3":
-
-        let menorPrecio = juguetes.sort ((a, b) => {
-            if (a.precio > b.precio) {
-                return 1
-            }
-            if (a.precio < b.precio) {
-                return -1
-            }
-            return 0
-        })
-
-        let verMenor= ""
-                menorPrecio.forEach(function(juguete) {
-                    verMenor += "-" + juguete.nombre + " " + juguete.precio + "\n"
-                });
-
-                verMenor += "\n* Oprime 0 para volver al menú"
-
-                let jugueteMenor = prompt (verMenor)
-
-                if (jugueteMenor == 0) {
-                    menuInicio()
-                }
-        break
+function principal() {
     
-    case "4":
-        let listaCarrito= ""
-        juguetes.forEach(function(juguete) {
-            listaCarrito += "ID: " + juguete.id + " - " + juguete.nombre + "\n"
-        });
+    let juguetes = [
+    { id: 1, nombre: "Pelota premio", categoria: "Pelotas", stock: 12, precio: 65000, rutaImagen: "pelota-premio.png" },
+    { id: 2, nombre: "Osito", categoria: "Peluches", stock: 20, precio: 35000, rutaImagen: "osito.png" },
+    { id: 3, nombre: "Lazo fuerza", categoria: "Lazos", stock: 7, precio: 15000, rutaImagen: "lazo-fuerza.png" },
+    { id: 4, nombre: "Bowl interactivo", categoria: "Jueguetes interactivos", stock: 6, precio: 70000, rutaImagen: "bowl.png" },
+    { id: 5, nombre: "Hueso", categoria: "Huesos", stock: 4, precio: 80000, rutaImagen: "hueso.png" },
+    { id: 6, nombre: "Pollo cantante", categoria: "Juguetes en latex", stock: 5, precio: 12000, rutaImagen: "pollo.png" },
+    { id: 7, nombre: "Pelota pawpy", categoria: "Pelotas", stock: 16, precio: 38000, rutaImagen: "pelota-pawpy.png" },
+    { id: 8, nombre: "Ovejita", categoria: "Juguetes en latex", stock: 4, precio: 15000, rutaImagen: "ovejita.png" },
+  ] 
 
-        listaCarrito += "\n* Ingresa el ID del producto que deseas agregar al carrito o 0 para volver al menú principal"
+  graficarCards(juguetes)
+  
+  cargarCarrito()
 
-        let productoSeleccionado = prompt (listaCarrito)
+let inputBuscador = document.getElementById("buscador")
 
-        if (productoSeleccionado == 0) {
-            menuInicio()
-        }
-
-        let productoAgregar= juguetes.find((juguete) => juguete.id == productoSeleccionado)
-
-        let carritoLleno=""
-        carrito.push(productoAgregar)
-
-        alert("Has agregado a tu carrito: " + productoAgregar.nombre) 
-
-        menuInicio()
-
-        break
+function filtrar(juguetes, input){
+    let juguetesFiltrados = juguetes.filter(juguete=> juguete.nombre.toLowerCase().includes(input.value.toLowerCase()) || juguete.categoria.toLowerCase().includes(input.value.toLowerCase()))
+    graficarCards(juguetesFiltrados)
     
-    case "5":
-        let totalCarrito= ""
-        
-        let totalPago= 0
+}
 
-        carrito.forEach(function(juguete) {
-            totalCarrito += "ID: " + juguete.id + " Producto: " + juguete.nombre + " Precio: " + juguete.precio + "\n"
-            totalPago= totalPago + juguete.precio
-        });
+inputBuscador.addEventListener("keyup",() => filtrar(juguetes, inputBuscador))
 
-        totalCarrito += "total a pagar: " + totalPago + "\n* Oprime 1 para comprar o 0 para volver al menú principal"
+let juguetesMayorPrecio = document.getElementById("mayor")
 
-        let cierreCarrito = prompt (totalCarrito)
-
-        if (cierreCarrito == 0) {
-            menuInicio()
-        } 
-
-        if (cierreCarrito == 1) {
-            alert("¡Gracias por tu compra! Te redireccionaremos al inicio :) ")
-            
-            carrito=[]
-
-            menuInicio()
+function precioMayor(){
+    let juguetesMayorPrecio = juguetes.sort((a, b) => {
+        if (a.precio > b.precio) {
+            return 1
         }
-        break
-
-    // Saludo
-    case "0":
-        alert(`Gracias ${username}, hasta pronto :)`)
-        break
+        if (a.precio < b.precio) {
+            return -1
+        }
+        return 0
+    })
+    juguetesMayorPrecio= juguetesMayorPrecio.reverse()
+    graficarCards(juguetesMayorPrecio)
+    
 }
 
+juguetesMayorPrecio.addEventListener("click", precioMayor)
+
+let juguetesMenorPrecio = document.getElementById("menor")
+
+function precioMenor(){
+    let juguetesMenorPrecio = juguetes.sort((a, b) => {
+        if (a.precio < b.precio) {
+            return 1
+        }
+        if (a.precio > b.precio) {
+            return -1
+        }
+        return 0
+    })
+    juguetesMenorPrecio= juguetesMenorPrecio.reverse()
+    graficarCards(juguetesMenorPrecio)
+    
 }
 
-
-function filtroCategoria (nombreCategoria) {
-    let categoriaFiltradas= juguetes.filter(juguete =>juguete.categoria.includes (nombreCategoria) )
-
-                let listaCategoria= ""
-                categoriaFiltradas.forEach(function(juguete, indice) {
-                    listaCategoria += "-" + juguete.nombre + "\n"
-                });
-
-                listaCategoria += "\n* Oprime 0 para volver al menú"
-
-                let regresarMenu = prompt (listaCategoria)
-
-                if (regresarMenu == 0) {
-                    menuInicio()
-                }
+juguetesMenorPrecio.addEventListener("click", precioMenor)
 }
 
-// login
+function recuperarCarrito() {
+    return localStorage.getItem("carrito") ? JSON.parse(localStorage.getItem("carrito")) : []
+  }
 
-let inputUsername = prompt('Ingresa tu usuario o presiona 0 para salir')
+function graficarCards (juguetes) {
+    let contenedor = document.getElementById("productos")
+    contenedor.innerHTML = "";
+    juguetes.forEach(juguete => {
+        let cardJuguete = document.createElement("div")
+        cardJuguete.classList.add("col-md-4")
+        cardJuguete.innerHTML=`
+        <div class="cardJuguete">
+            <img class="img-fluid" src="./images/${juguete.rutaImagen}"></img>
+            <h3 class= "nombre-producto">${juguete.nombre}</h3>
+            <p class= "categoria-producto"> Categoría: ${juguete.categoria}</p>
+            <h4 class= "precio-producto">$ ${juguete.precio}</h4>
+            <button class= "btn-agregar-carrito" id=${juguete.id}>Agregar al carrito</button>
+            </div>
+            `
+        contenedor.appendChild(cardJuguete)
 
+        let botonAgregarAlCarrito = document.getElementById(juguete.id)
+        botonAgregarAlCarrito.addEventListener("click", (e) => agregarAlCarrito(juguetes, e))
+    })
 
-// check username
-while (inputUsername !== username && inputUsername != 0) {
-    inputUsername = prompt('Usuario incorrecto, por favor ingresa nuevamente tu usuario o presiona 0 para salir')
-}
+let vaciarCarrito = document.getElementById("carritoVacio")
 
-if (inputUsername == 0) {
-    alert('Hasta pronto')
+vaciarCarrito.addEventListener("click", () =>{
+    localStorage.clear()
+    cargarCarrito()
+})
+
+let finalizarCompra = document.getElementById("finalizarCompra")
+
+finalizarCompra.addEventListener("click", () =>{
+
+let notificacionCompra = document.getElementById("carrito")
+let carrito= recuperarCarrito()
+if (carrito.length > 0) {
+    notificacionCompra.innerHTML=`
+    <div class="alert alert-success" role="alert">
+    ¡Gracias por tu compra!
+    </div>
+    `
+    localStorage.clear()    
+    
 } else {
-
-    let inputPassword = prompt('Ingresa tu contraseña o presiona 0 para salir')
-
-    // check password
-    while (inputPassword !== password && inputPassword != 0) {
-        inputPassword = prompt('Contraseña incorrecta, por favor ingresa nuevamente tu contraseña o presiona 0 para salir')
-    }
-
-    if (inputPassword == 0) {
-        alert('Hasta pronto')
-    } else {
-
-        //flujo usuario logueado
-        
-        alert(`Bienvenido ${username}`)
-
-        menuInicio()
-       
-
-    }
-
+    notificacionCompra.innerHTML=`
+    <div class="alert alert-danger" role="alert">
+    No has agregado productos al carrito
+    </div>
+    `
 }
+
+})
+}
+
+function agregarAlCarrito(juguetes, e) {
+    let carrito = recuperarCarrito()
+    let jugueteParaBuscar = juguetes.find(juguete => juguete.id === Number(e.target.id))
+    let productoCarrito = carrito.find(juguete => juguete.id === jugueteParaBuscar.id)
+  
+    if (productoCarrito) {
+        productoCarrito.unidades++
+        productoCarrito.subtotal = productoCarrito.precioUnitario * productoCarrito.unidades
+      } else {
+        carrito.push({
+          id: jugueteParaBuscar.id,
+          nombre: jugueteParaBuscar.nombre,
+          precioUnitario: jugueteParaBuscar.precio,
+          subtotal: jugueteParaBuscar.precio,
+          unidades: 1
+        })
+    }
+
+    localStorage.setItem("carrito", JSON.stringify(carrito))
+  
+    cargarCarrito()
+  }
+  
+  function cargarCarrito() {
+    let contenedor = document.getElementById("carrito")
+    contenedor.innerHTML = ""
+    let carrito = recuperarCarrito()
+    
+    let totalCarrito = 0
+
+    carrito.forEach(juguete => {
+      let cardJuguete = document.createElement("div")
+      totalCarrito = totalCarrito + juguete.subtotal
+      cardJuguete.innerHTML = `
+      <div class="d-flex p-2 justify-content-between"> 
+            <h5>${juguete.unidades}x ${juguete.nombre}</h5>
+            <p>$ ${juguete.subtotal}</p>
+       </div>
+      `
+      contenedor.appendChild(cardJuguete)
+    })
+    
+    let cardJuguete = document.createElement("div")
+    cardJuguete.innerHTML = `
+    <div class="d-flex p-2 justify-content-between"> 
+          <h5>Total</h5>
+          <p>$ ${totalCarrito}</p>
+     </div>
+    `
+    contenedor.appendChild(cardJuguete)
+  }
+  
+
+
+principal()
