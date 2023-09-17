@@ -1,0 +1,10 @@
+[
+    { "id": 1, "nombre": "Pelota premio", "categoria": "Pelotas", "stock": 12, "precio": 65000, "rutaImagen": "pelota-premio.png" },
+    { "id": 2, "nombre": "Osito", "categoria": "Peluches", "stock": 20, "precio": 35000, "rutaImagen": "osito.png" },
+    { "id": 3, "nombre": "Lazo fuerza", "categoria": "Lazos", "stock": 7, "precio": 15000, "rutaImagen": "lazo-fuerza.png" },
+    { "id": 4, "nombre": "Bowl interactivo", "categoria": "Jueguetes interactivos", "stock": 6, "precio": 70000, "rutaImagen": "bowl.png" },
+    { "id": 5, "nombre": "Hueso", "categoria": "Huesos", "stock": 4, "precio": 80000, "rutaImagen": "hueso.png" },
+    { "id": 6, "nombre": "Pollo cantante", "categoria": "Juguetes en latex", "stock": 5, "precio": 12000, "rutaImagen": "pollo.png" },
+    { "id": 7, "nombre": "Pelota pawpy", "categoria": "Pelotas", "stock": 16, "precio": 38000, "rutaImagen": "pelota-pawpy.png" },
+    { "id": 8, "nombre": "Ovejita", "categoria": "Juguetes en latex", "stock": 4, "precio": 15000, "rutaImagen": "ovejita.png" }
+  ]

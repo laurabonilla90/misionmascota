@@ -1,8 +1,10 @@
 // e-commerce de juguetes para mascotas
 
-function principal() {
-    
-    let juguetes = [
+async function principal() {
+    const respuesta= await fetch('./data.json')
+    console.log(respuesta)
+    const juguetes= await respuesta.json()
+    /*let juguetes = [
     { id: 1, nombre: "Pelota premio", categoria: "Pelotas", stock: 12, precio: 65000, rutaImagen: "pelota-premio.png" },
     { id: 2, nombre: "Osito", categoria: "Peluches", stock: 20, precio: 35000, rutaImagen: "osito.png" },
     { id: 3, nombre: "Lazo fuerza", categoria: "Lazos", stock: 7, precio: 15000, rutaImagen: "lazo-fuerza.png" },
@@ -12,6 +14,10 @@ function principal() {
     { id: 7, nombre: "Pelota pawpy", categoria: "Pelotas", stock: 16, precio: 38000, rutaImagen: "pelota-pawpy.png" },
     { id: 8, nombre: "Ovejita", categoria: "Juguetes en latex", stock: 4, precio: 15000, rutaImagen: "ovejita.png" },
   ] 
+  fetch('./data.json')
+  .then(respuesta => respuesta.json())
+  .then(juguetes => principal(juguetes))
+  .catch(error => console.log(error))*/
 
   graficarCards(juguetes)
   
@@ -102,14 +108,18 @@ let finalizarCompra = document.getElementById("finalizarCompra")
 
 finalizarCompra.addEventListener("click", () =>{
 
+function alerta(title, icon) {
+    Swal.fire({
+        title: title,
+        icon,
+    })
+}
+
 let notificacionCompra = document.getElementById("carrito")
 let carrito= recuperarCarrito()
 if (carrito.length > 0) {
-    notificacionCompra.innerHTML=`
-    <div class="alert alert-success" role="alert">
-    ¡Gracias por tu compra!
-    </div>
-    `
+    alerta("¡Gracias por tu compra!")
+    notificacionCompra.innerHTML=""
     localStorage.clear()    
     
 } else {
@@ -173,6 +183,7 @@ function agregarAlCarrito(juguetes, e) {
      </div>
     `
     contenedor.appendChild(cardJuguete)
+      
   }
   
 
