@@ -1,7 +1,7 @@
 // e-commerce de juguetes para mascotas
 
 async function principal() {
-    const respuesta= await fetch('./data.json')
+    const respuesta= await fetch('/data.json')
     console.log(respuesta)
     const juguetes= await respuesta.json()
     /*let juguetes = [
